@@ -26,7 +26,8 @@ app.use(koaBody());
 // route definitions
 router
   .get("/", list)
-  .get("/post/:id", getPostById)
+  .post("/post", createPost)
+  .get("/post/:id", getPostById);
 
 
 app.use(router.routes());
@@ -40,6 +41,15 @@ function getPostById(ctx) {
     let filterPost = posts.filter((d) => d.id == id);
     if (!filterPost) ctx.throw(404, "invalid post id");
     ctx.response.body = { post: filterPost };
+  }
+
+  function createPost(ctx){
+    const post = ctx.request.body;
+    console.log("🚀 ~ file: app.js ~ line 48 ~ createPost ~ post", post)
+    const id = posts.push(posts.length) - 1;
+    post.created_at = new Date();
+    post.id = id;
+    ctx.response.body = {post:post,message:"post added"}
   }
 
 // listen to port 3000
