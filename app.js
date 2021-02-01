@@ -26,12 +26,21 @@ app.use(koaBody());
 // route definitions
 router
   .get("/", list)
+  .get("/post/:id", getPostById)
+
 
 app.use(router.routes());
 
 function list(ctx) {
   ctx.response.body = { posts: posts };
 }
-// listen
 
+function getPostById(ctx) {
+    const id = ctx.params.id;
+    let filterPost = posts.filter((d) => d.id == id);
+    if (!filterPost) ctx.throw(404, "invalid post id");
+    ctx.response.body = { post: filterPost };
+  }
+
+// listen to port 3000
 if (!module.parent) app.listen(3000);
