@@ -8,18 +8,12 @@ const app = (module.exports = new Koa());
 
 // middleware
 app.use(logger());
-
 app.use(koaBody());
-// route definitions
-// router
-//   .get("/", list)
-//   .post("/post", createPost)
-//   .get("/post/:id", getPostById);
 
 var router = require("./routes");
 app.use(router.routes());
 
-// app.use(router).use(router.allowedMethods());
+app.use(router.routes()).use(router.allowedMethods());
 
 // listen to port 3000
 if (!module.parent)
